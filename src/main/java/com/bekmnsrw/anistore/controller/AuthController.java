@@ -13,4 +13,10 @@ public class AuthController {
 
     @GetMapping("/about")
     public String showAboutPage() { return "about"; }
+
+    @GetMapping("/sign-in")
+    public String showSignInPage() { return "auth/sign_in"; }
+
+    @GetMapping("/sign-up")
+    public String showSignUpPage() { return "auth/sign_up"; }
 }
