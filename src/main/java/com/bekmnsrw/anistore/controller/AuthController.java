@@ -9,12 +9,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class AuthController {
 
     @GetMapping("/welcome")
-    public String showWelcomePage() {
-        return "welcome";
-    }
+    public String showWelcomePage() { return "welcome"; }
 
     @GetMapping("/about")
-    public String showAboutPage() {
-        return "about";
-    }
+    public String showAboutPage() { return "about"; }
 }
