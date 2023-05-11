@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>NavBar</title>
+</head>
+<body>
+    <nav th:fragment="navbar" class="navbar navbar-dark navbar-expand-lg fixed-top bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand">
+                <img th:src="@{/logo.svg}" alt="logo" width="30" height="30" class="d-inline-block align-text-top">
+                AniStore
+            </a>
+
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item"><a class="nav-link">About</a></li>
+                    <li class="nav-item ms-2"><a class="nav-link">Catalog</a></li>
+                    <li class="nav-item ms-2"><a class="nav-link position-relative">Cart</a></li>
+    <!--                <span class="position-absolute mt-2 top-0 start-100 translate-middle badge rounded-pill bg-danger"></span>-->
+                    <li class="nav-item ms-2"><a class="nav-link">Profile</a></li>
+    <!--              <li class="nav-item ms-2"><a class="nav-link">Add Product</a></li>-->
+    <!--              <li class="nav-item ms-2"><a class="nav-link">"Update Product</a></li>-->
+                </ul>
+            </div>
+        </div>
+    </nav>
+</body>
+</html>
