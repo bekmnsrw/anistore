@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Welcome</title>
+
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css"
+          integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ"
+          crossorigin="anonymous">
+</head>
+<body class="class=d-flex flex-column min-vh-100">
+<div th:insert="~{parts/navbar::navbar}"></div>
+<div class="cover-container d-flex mx-auto my-auto flex-column text-center text-black">
+    <main class="position-absolute top-50 start-50 translate-middle">
+        <h1>Welcome to Anistore, <span class="text-muted">Dear Guest!</span></h1>
+        <p class="lead">GIVE YOURSELF A UNIQUE GIFT</p>
+        <p class="lead"><a class="btn btn-outline-dark" th:href="@{/about}">Explore</a></p>
+    </main>
+</div>
+</body>
+</html>

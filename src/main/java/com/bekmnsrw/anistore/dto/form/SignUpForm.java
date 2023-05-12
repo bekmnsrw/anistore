@@ -1,6 +1,5 @@
-package com.bekmnsrw.anistore.dto;
+package com.bekmnsrw.anistore.dto.form;
 
-import com.bekmnsrw.anistore.model.enums.UserRole;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -10,10 +9,9 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserDto {
-    private Long id;
+public class SignUpForm {
     private String firstName;
     private String secondName;
-    private UserRole userRole;
     private String email;
+    private String password;
 }

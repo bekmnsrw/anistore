@@ -1,7 +1,6 @@
 package com.bekmnsrw.anistore.model;
 
 import com.bekmnsrw.anistore.model.enums.UserRole;
-import com.bekmnsrw.anistore.model.enums.UserStatus;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -27,10 +26,6 @@ public class User {
     @Enumerated(EnumType.STRING)
     @Column(name = "user_role")
     private UserRole userRole;
-
-    @Enumerated(EnumType.STRING)
-    @Column(name = "user_status")
-    private UserStatus userStatus;
 
     private String email;
 
