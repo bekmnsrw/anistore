@@ -1,6 +1,6 @@
 -- USERS
-INSERT INTO accounts (email, first_name, password, second_name, user_role, user_status)
-VALUES ('admin@admin.com', 'admin', 'admin', 'admin', 'ADMIN', 'CONFIRMED');
+INSERT INTO accounts (email, first_name, password, second_name, user_role)
+VALUES ('admin@admin.com', 'admin', 'admin', 'admin', 'ADMIN');
 
 -- PRODUCTS
 INSERT INTO products (category, description, image_url, price, title)
