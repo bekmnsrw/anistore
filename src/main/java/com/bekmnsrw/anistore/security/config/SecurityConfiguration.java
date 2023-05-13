@@ -10,7 +10,11 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
+import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+
+import javax.sql.DataSource;
 
 @Configuration
 @EnableWebSecurity
@@ -34,6 +38,7 @@ public class SecurityConfiguration {
 
     private final PasswordEncoder passwordEncoder;
     private final UserDetailsService userDetailsServiceImpl;
+    private final DataSource dataSource;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
@@ -51,7 +56,11 @@ public class SecurityConfiguration {
                 .usernameParameter(USERNAME_PARAMETER)
                 .passwordParameter(PASSWORD_PARAMETER)
                 .defaultSuccessUrl(PROFILE_URL)
-                .failureUrl(SIGN_IN_FAILURE_URL);
+                .failureUrl(SIGN_IN_FAILURE_URL)
+                .and()
+                .rememberMe()
+                .rememberMeParameter("remember-me")
+                .tokenRepository(persistentTokenRepository());
 
         httpSecurity.logout()
                 .logoutRequestMatcher(new AntPathRequestMatcher(SIGN_OUT_URL))
@@ -59,8 +68,6 @@ public class SecurityConfiguration {
                 .clearAuthentication(true)
                 .invalidateHttpSession(false)
                 .deleteCookies(JSESSIONID);
-
-
 
         return httpSecurity.build();
     }
@@ -72,5 +79,12 @@ public class SecurityConfiguration {
         authenticationManagerBuilder
                 .userDetailsService(userDetailsServiceImpl)
                 .passwordEncoder(passwordEncoder);
+    }
+
+    @Bean
+    public PersistentTokenRepository persistentTokenRepository() {
+        JdbcTokenRepositoryImpl jdbcTokenRepository = new JdbcTokenRepositoryImpl();
+        jdbcTokenRepository.setDataSource(dataSource);
+        return jdbcTokenRepository;
     }
 }
