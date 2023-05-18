@@ -140,10 +140,8 @@
 
 <h2 class="featurette-heading text-center fw-normal">So, what are you waiting for? <span
         class="text-muted">Let's start!</span></h2>
-<div sec:authorize="isAnonymous()">
-    <div class="d-flex justify-content-center mb-5">
-        <a class="btn btn-outline-dark mt-3 mb-5" th:href="@{/sign-in}">Start</a>
-    </div>
+<div th:if="${name == null}" class="d-flex justify-content-center mb-5">
+    <a th:if="${name == null}" class="btn btn-outline-dark mt-3 mb-5" th:href="@{/sign-in}">Start</a>
 </div>
 
 <footer class="text-center text-white position-absolute start-0 end-0 bg-dark">

@@ -35,6 +35,7 @@ public class SecurityConfiguration {
 
     private static final String USERNAME_PARAMETER = "email";
     private static final String PASSWORD_PARAMETER = "password";
+    private static final String REMEMBER_ME_PARAMETER = "remember-me";
 
     private final PasswordEncoder passwordEncoder;
     private final UserDetailsService userDetailsServiceImpl;
@@ -59,7 +60,7 @@ public class SecurityConfiguration {
                 .failureUrl(SIGN_IN_FAILURE_URL)
                 .and()
                 .rememberMe()
-                .rememberMeParameter("remember-me")
+                .rememberMeParameter(REMEMBER_ME_PARAMETER)
                 .tokenRepository(persistentTokenRepository());
 
         httpSecurity.logout()

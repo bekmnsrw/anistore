@@ -1,6 +1,5 @@
 package com.bekmnsrw.anistore.service.impl;
 
-import com.bekmnsrw.anistore.dto.UserDto;
 import com.bekmnsrw.anistore.dto.form.SignUpForm;
 import com.bekmnsrw.anistore.mapper.UserMapper;
 import com.bekmnsrw.anistore.model.User;
@@ -19,7 +18,7 @@ public class SignUpServiceImpl implements SignUpService {
     private final PasswordEncoder passwordEncoder;
 
     @Override
-    public UserDto signUp(SignUpForm signUpForm) {
+    public void signUp(SignUpForm signUpForm) {
         if (userRepository.findByEmail(signUpForm.getEmail()).isPresent()) {
             throw new RuntimeException("Email already taken");
         } else {
@@ -27,7 +26,7 @@ public class SignUpServiceImpl implements SignUpService {
             String password = userToSave.getPassword();
             userToSave.setPassword(passwordEncoder.encode(password));
             User savedUser = userRepository.save(userToSave);
-            return userMapper.from(savedUser);
+            userMapper.from(savedUser);
         }
     }
 }
