@@ -14,6 +14,36 @@
 </script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script>
+    let cartItems = new Map()
+
+    function onLoad(productsInCart) {
+        for (let i = 0; i < productsInCart.length; i++) {
+            let item = Object.values(productsInCart[i])
+            cartItems.set(item[0], {price: item[3], amount: item[5]})
+        }
+
+        updateTotalSum()
+    }
+
+    function updateTotalSum() {
+        let result = 0
+
+        for (let item of cartItems.entries()) {
+            result += Object.values(item).at(1).price * Object.values(item).at(1).amount
+        }
+
+        document.getElementById("totalPrice").innerHTML = "Cart price: " + result.toFixed(1) + " ₽"
+    }
+
+    function updateProductPrice(productId) {
+        let price = cartItems.get(productId).amount * cartItems.get(productId).price
+        document.getElementById('itemPrice' + productId).innerHTML = price.toFixed(1) + " ₽"
+    }
+
+    function updateProductAmount(productId, newAmount) {
+        cartItems.get(productId).amount = newAmount
+    }
+
     function onPlusClicked(productId, csrfToken) {
         let data = {btnPlus: productId, btnMinus: ""}
         $.ajax(
@@ -21,9 +51,15 @@
                 type: "POST",
                 url: "/cart",
                 data: $.param(data),
-                headers: { 'X-CSRF-Token': csrfToken }
+                headers: {'X-CSRF-Token': csrfToken}
             }
         )
+
+        let itemAmount = cartItems.get(productId).amount + 1
+        document.getElementById('btnPlus' + productId).nextElementSibling.innerHTML = itemAmount
+        updateProductAmount(productId, itemAmount)
+        updateTotalSum()
+        updateProductPrice(productId)
     }
 
     function onMinusClicked(productId, csrfToken) {
@@ -33,16 +69,26 @@
                 type: "POST",
                 url: "/cart",
                 data: $.param(data),
-                headers: { 'X-CSRF-Token': csrfToken }
+                headers: {'X-CSRF-Token': csrfToken}
             }
         )
+
+        let itemAmount = cartItems.get(productId).amount - 1
+        document.getElementById('btnMinus' + productId).previousElementSibling.innerHTML = itemAmount
+        updateProductAmount(productId, itemAmount)
+        updateTotalSum()
+        updateProductPrice(productId)
+
+        if (itemAmount === 0) {
+            document.getElementById('card' + productId).remove()
+        }
     }
 </script>
 <head>
     <meta charset="UTF-8">
     <title>Cart</title>
 </head>
-<body>
+<body th:onload="onLoad([[${productsInCart}]])">
 <div th:insert="~{parts/navbar::navbar}"></div>
 <section class="h-100">
     <div class="container h-100 py-5 mt-5">
@@ -53,10 +99,10 @@
                     <h6 class="mb-0 text-muted me-2" th:text="'Items in cart: ' + ${productsInCart.size()}"></h6>
                 </div>
                 <div class="d-flex justify-content-end mb-5">
-                    <h6 class="mb-0 text-muted me-2" th:text="'Total order price: ' + ${productsInCart.size()}"></h6>
+                    <h6 id="totalPrice" class="mb-0 text-muted me-2"></h6>
                 </div>
 
-                <div th:each="product: ${productsInCart}" class="card rounded-3 mb-4 shadow-lg">
+                <div th:id="'card' + ${product.getProductId()}" th:each="product: ${productsInCart}" class="card rounded-3 mb-4 shadow-lg">
                     <div class="card-body p-4">
                         <div class="row d-flex justify-content-between align-items-center">
                             <div class="col-md-2 col-lg-2 col-xl-2">
@@ -68,19 +114,26 @@
                             </div>
 
                             <div class="col-md-3 col-lg-3 col-xl-2 d-flex">
-                                <button th:onclick="onPlusClicked([[${product.getProductId()}]], [[${_csrf.token}]])"
-                                        class="btn btn-link px-2 plus">
-                                    <i class="fas fa-plus text-muted"></i>
-                                </button>
-                                <h6 th:text="${product.getProductAmount()}" class="text-center text-dark counter"></h6>
-                                <button th:onclick="onMinusClicked([[${product.getProductId()}]], [[${_csrf.token}]])"
-                                        class="btn btn-link px-2">
-                                    <i class="fas fa-minus text-muted minus"></i>
-                                </button>
+                                <div>
+                                    <button th:onclick="onPlusClicked([[${product.getProductId()}]], [[${_csrf.token}]], [[${product.getProductAmount()}]])"
+                                            th:id="'btnPlus' + ${product.getProductId()}"
+                                            class="btn btn-link px-2 plus">
+                                        <i class="fas fa-plus text-muted"></i>
+                                    </button>
+                                    <h6 th:text="${product.getProductAmount()}"
+                                        class="text-center text-dark counter"></h6>
+                                    <button th:onclick="onMinusClicked([[${product.getProductId()}]], [[${_csrf.token}]], [[${product.getProductAmount()}]])"
+                                            th:id="'btnMinus' + ${product.getProductId()}"
+                                            class="btn btn-link px-2">
+                                        <i class="fas fa-minus text-muted minus"></i>
+                                    </button>
+                                </div>
                             </div>
 
                             <div class="col-md-3 col-lg-2 col-xl-2 offset-lg-1">
-                                <h5 th:text="${product.getProductPrice()} + ' ₽'" class="mb-0"></h5>
+                                <h5 th:id="'itemPrice' + ${product.getProductId()}"
+                                    th:text="${product.getProductPrice() * product.getProductAmount()} + ' ₽'"
+                                    class="mb-0"></h5>
                             </div>
                         </div>
                     </div>
