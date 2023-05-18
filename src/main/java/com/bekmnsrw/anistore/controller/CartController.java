@@ -6,7 +6,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -35,24 +34,20 @@ public class CartController {
     }
 
     @PostMapping
-    public String updateProductAmountInCart(
-            @RequestParam(value = "btnPlus", required = false) Long btnPlus,
-            @RequestParam(value = "btnMinus", required = false) Long btnMinus,
-            Model model
+    public void updateProductAmountInCart(
+            @RequestParam(value = "btnPlus") String btnPlus,
+            @RequestParam(value = "btnMinus") String btnMinus
     ) {
-        model.addAttribute("btnPlus", btnPlus);
-        model.addAttribute("btnMinus", btnMinus);
-
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
-        if (btnPlus != null) {
-            cartItemService.increaseProductAmountInController(authentication.getName(), btnPlus);
+        if (!btnPlus.isEmpty()) {
+            cartItemService
+                    .increaseProductAmountInController(authentication.getName(), Long.valueOf(btnPlus));
         }
 
-        if (btnMinus != null) {
-            cartItemService.decreaseProductAmountInController(authentication.getName(), btnMinus);
+        if (!btnMinus.isEmpty()) {
+            cartItemService
+                    .decreaseProductAmountInController(authentication.getName(), Long.valueOf(btnMinus));
         }
-
-        return "cart";
     }
 }

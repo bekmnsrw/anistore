@@ -12,6 +12,32 @@
         integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe"
         crossorigin="anonymous">
 </script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script>
+    function onPlusClicked(productId, csrfToken) {
+        let data = {btnPlus: productId, btnMinus: ""}
+        $.ajax(
+            {
+                type: "POST",
+                url: "/cart",
+                data: $.param(data),
+                headers: { 'X-CSRF-Token': csrfToken }
+            }
+        )
+    }
+
+    function onMinusClicked(productId, csrfToken) {
+        let data = {btnPlus: "", btnMinus: productId}
+        $.ajax(
+            {
+                type: "POST",
+                url: "/cart",
+                data: $.param(data),
+                headers: { 'X-CSRF-Token': csrfToken }
+            }
+        )
+    }
+</script>
 <head>
     <meta charset="UTF-8">
     <title>Cart</title>
@@ -22,10 +48,14 @@
     <div class="container h-100 py-5 mt-5">
         <div class="row d-flex justify-content-center align-items-center h-100">
             <div class="col-10">
-                <div class="d-flex justify-content-between align-items-center mb-5">
-                    <h3 class="fw-bold mb-0 text-dark">Shopping Cart</h3>
-                    <h6 class="mb-0 text-muted me-2" th:text="${productsInCart.size()} + ' items in cart'"></h6>
+                <div class="d-flex justify-content-between align-items-center">
+                    <h3 class="fw-bold mb-0 text-dark">Your shopping Cart</h3>
+                    <h6 class="mb-0 text-muted me-2" th:text="'Items in cart: ' + ${productsInCart.size()}"></h6>
                 </div>
+                <div class="d-flex justify-content-end mb-5">
+                    <h6 class="mb-0 text-muted me-2" th:text="'Total order price: ' + ${productsInCart.size()}"></h6>
+                </div>
+
                 <div th:each="product: ${productsInCart}" class="card rounded-3 mb-4 shadow-lg">
                     <div class="card-body p-4">
                         <div class="row d-flex justify-content-between align-items-center">
@@ -38,32 +68,19 @@
                             </div>
 
                             <div class="col-md-3 col-lg-3 col-xl-2 d-flex">
-                                <form method="post" th:action="@{/cart}">
-                                    <button th:name="btnPlus"
-                                            id="buttonPlus"
-                                            th:value="${product.getProductId()}"
-                                            class="btn btn-link px-2">
-                                        <i class="fas fa-plus text-muted"></i>
-                                    </button>
-                                    <h6 th:text="${product.getProductAmount()}" class="text-center text-dark"></h6>
-                                    <button th:name="btnMinus"
-                                            id="buttonMinus"
-                                            th:value="${product.getProductId()}"
-                                            class="btn btn-link px-2">
-                                        <i class="fas fa-minus text-muted"></i>
-                                    </button>
-                                </form>
+                                <button th:onclick="onPlusClicked([[${product.getProductId()}]], [[${_csrf.token}]])"
+                                        class="btn btn-link px-2 plus">
+                                    <i class="fas fa-plus text-muted"></i>
+                                </button>
+                                <h6 th:text="${product.getProductAmount()}" class="text-center text-dark counter"></h6>
+                                <button th:onclick="onMinusClicked([[${product.getProductId()}]], [[${_csrf.token}]])"
+                                        class="btn btn-link px-2">
+                                    <i class="fas fa-minus text-muted minus"></i>
+                                </button>
                             </div>
 
                             <div class="col-md-3 col-lg-2 col-xl-2 offset-lg-1">
-                                <h5 th:text="${product.getProductPrice()}" class="mb-0">₽</h5>
-                            </div>
-                            <div class="col-md-1 col-lg-1 col-xl-1 text-end me-2">
-                                <form method="post">
-                                    <button type="submit" class="btn btn-outline-danger" name="deleteFromCart"
-                                            value="${product.id}">Delete
-                                    </button>
-                                </form>
+                                <h5 th:text="${product.getProductPrice()} + ' ₽'" class="mb-0"></h5>
                             </div>
                         </div>
                     </div>
