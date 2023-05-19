@@ -58,11 +58,14 @@ public class CartItemServiceImpl implements CartItemService {
         List<CartItemDto> result = new ArrayList<>();
 
         CartDto cartDto = cartService.findCurrentCart(email);
-        List<ProductDto> productsInCart = this.getAllProductsInCart(cartDto.getId());
-        List<Long> productsAmount = cartItemRepository.getAllProductsAmountInCart(cartDto.getId());
 
-        for (int i = 0; i < productsInCart.size(); i++) {
-            result.add(productMapper.from(productsInCart.get(i), productsAmount.get(i)));
+        if (cartDto != null) {
+            List<ProductDto> productsInCart = this.getAllProductsInCart(cartDto.getId());
+            List<Long> productsAmount = cartItemRepository.getAllProductsAmountInCart(cartDto.getId());
+
+            for (int i = 0; i < productsInCart.size(); i++) {
+                result.add(productMapper.from(productsInCart.get(i), productsAmount.get(i)));
+            }
         }
 
         return result;

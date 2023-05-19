@@ -55,5 +55,6 @@ public class OrderServiceImpl implements OrderService {
                 .build();
 
         orderRepository.save(order);
+        cartService.markCurrentCartAsInactive(email);
     }
 }
