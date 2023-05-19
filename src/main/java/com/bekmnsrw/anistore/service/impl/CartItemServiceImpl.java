@@ -3,6 +3,7 @@ package com.bekmnsrw.anistore.service.impl;
 import com.bekmnsrw.anistore.dto.CartDto;
 import com.bekmnsrw.anistore.dto.CartItemDto;
 import com.bekmnsrw.anistore.dto.ProductDto;
+import com.bekmnsrw.anistore.mapper.CartItemMapper;
 import com.bekmnsrw.anistore.mapper.ProductMapper;
 import com.bekmnsrw.anistore.model.Cart;
 import com.bekmnsrw.anistore.model.CartItem;
@@ -26,6 +27,7 @@ public class CartItemServiceImpl implements CartItemService {
     private final ProductService productService;
     private final CartService cartService;
     private final ProductMapper productMapper;
+    private final CartItemMapper cartItemMapper;
 
     @Override
     public Boolean isInCart(Long cartId, Long productId) {
@@ -99,5 +101,15 @@ public class CartItemServiceImpl implements CartItemService {
     public void deleteProductFromCart(String email, Long productId) {
         CartDto cartDto = cartService.findCurrentCart(email);
         cartItemRepository.deleteByCartIdAndProductId(cartDto.getId(), productId);
+    }
+
+    @Override
+    public List<ProductDto> findAllProductsInCart(Long cartId) {
+        return productMapper.from(cartItemRepository.findAllProductsInCart(cartId));
+    }
+
+    @Override
+    public CartItemDto findByCartIdAndProductId(Long cartId, Long productId) {
+        return cartItemMapper.from(cartItemRepository.findByCartIdAndProductId(cartId, productId));
     }
 }
