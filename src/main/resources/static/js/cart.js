@@ -8,6 +8,7 @@ function onLoad(productsInCart) {
 
     updateTotalSum()
     document.getElementById("totalAmount").innerHTML = "Items in cart: " + cartItems.size
+    isCartEmpty()
 }
 
 function updateTotalSum() {

@@ -17,7 +17,7 @@ public class UserMapperImpl implements UserMapper {
                 .secondName(signUpForm.getSecondName())
                 .email(signUpForm.getEmail())
                 .password(signUpForm.getPassword())
-                .userRole(UserRole.USER)
+                .userRole(UserRole.ROLE_USER)
                 .build();
     }
 
