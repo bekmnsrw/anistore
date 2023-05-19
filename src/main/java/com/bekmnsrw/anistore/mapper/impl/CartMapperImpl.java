@@ -14,8 +14,6 @@ public class CartMapperImpl implements CartMapper {
         return CartDto.builder()
                 .id(cart.getId())
                 .cartStatus(cart.getCartStatus())
-                .totalCartPrice(cart.getTotalCartPrice())
-                .totalProductsAmount(cart.getTotalProductsAmount())
                 .build();
     }
 
@@ -25,8 +23,6 @@ public class CartMapperImpl implements CartMapper {
                 .id(cartDto.getId())
                 .cartStatus(cartDto.getCartStatus())
                 .user(user)
-                .totalProductsAmount(cartDto.getTotalProductsAmount())
-                .totalCartPrice(cartDto.getTotalCartPrice())
                 .build();
     }
 }

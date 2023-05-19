@@ -11,7 +11,9 @@ import com.bekmnsrw.anistore.service.CartService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -27,8 +29,6 @@ public class CartServiceImpl implements CartService {
         if (optionalUser.isPresent()) {
             Cart cart = Cart.builder()
                     .user(optionalUser.get())
-                    .totalCartPrice(0.0)
-                    .totalProductsAmount(0L)
                     .cartStatus(CartStatus.ACTIVE)
                     .build();
 
@@ -55,5 +55,13 @@ public class CartServiceImpl implements CartService {
         CartDto cartDto = this.findCurrentCart(email);
         cartDto.setCartStatus(CartStatus.INACTIVE);
         cartRepository.save(cartMapper.from(cartDto, user));
+    }
+
+    @Override
+    public List<CartDto> findAllInactiveCarts(String email) {
+        return cartRepository.findAllCarts(email)
+                .stream()
+                .map(cartMapper::from)
+                .collect(Collectors.toList());
     }
 }

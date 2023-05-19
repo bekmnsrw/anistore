@@ -13,6 +13,4 @@ import lombok.NoArgsConstructor;
 public class CartDto {
     private Long id;
     private CartStatus cartStatus;
-    private Long totalProductsAmount;
-    private Double totalCartPrice;
 }

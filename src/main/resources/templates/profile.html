@@ -35,23 +35,21 @@
                 <table class="table table-hover mt-3 ms-4">
                     <thead class="thead">
                     <tr>
-                        <th class="table-dark text-center" scope="col">Date</th>
+                        <th class="table-dark text-center" scope="col">Created At</th>
                         <th class="table-dark text-center" scope="col">Products</th>
                         <th class="table-dark text-center" scope="col">Price</th>
                         <th class="table-dark text-center" scope="col">Address</th>
                         <th class="table-dark text-center" scope="col">Status</th>
                     </tr>
                     </thead>
-                    <tbody>
-                    <!--                    <c:forEach var="order" items="${requestScope.orders}" varStatus="status">-->
-                    <!--                        <tr>-->
-                    <!--                            <th class="text-center" scope="row">${order.id}</th>-->
-                    <!--                            <td class="text-center">${order.date}</td>-->
-                    <!--                            <td class="text-center">${order.price} ₽</td>-->
-                    <!--                            <td class="text-center">${addresses[status.index]}</td>-->
-                    <!--                            <td class="text-center">${products[status.index]}</td>-->
-                    <!--                        </tr>-->
-                    <!--                    </c:forEach>-->
+                    <tbody th:each="order: ${orderHistory}">
+                    <tr>
+                        <th class="text-center" scope="row" th:text="${order.getCreatedAt()}"></th>
+                        <td class="text-center" th:text="${order.getProducts()}"></td>
+                        <td class="text-center" th:text="${order.getPrice()} + ' ₽'"></td>
+                        <td class="text-center" th:text="${order.getAddress()}"></td>
+                        <td class="text-center" th:text="${order.getStatus()}"></td>
+                    </tr>
                     </tbody>
                 </table>
             </div>
