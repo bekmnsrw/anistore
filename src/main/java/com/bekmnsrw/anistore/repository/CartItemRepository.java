@@ -28,4 +28,7 @@ public interface CartItemRepository extends JpaRepository<CartItem, Long> {
     @Transactional
     @Query(value = "UPDATE cart_items c SET c.productAmount = (c.productAmount - 1L) WHERE c.cart.id = :cartId AND c.product.id = :productId")
     void decreaseProductAmount(Long cartId, Long productId);
+
+    @Transactional
+    void deleteByCartIdAndProductId(Long cartId, Long productId);
 }

@@ -13,77 +13,7 @@
         crossorigin="anonymous">
 </script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-<script>
-    let cartItems = new Map()
-
-    function onLoad(productsInCart) {
-        for (let i = 0; i < productsInCart.length; i++) {
-            let item = Object.values(productsInCart[i])
-            cartItems.set(item[0], {price: item[3], amount: item[5]})
-        }
-
-        updateTotalSum()
-    }
-
-    function updateTotalSum() {
-        let result = 0
-
-        for (let item of cartItems.entries()) {
-            result += Object.values(item).at(1).price * Object.values(item).at(1).amount
-        }
-
-        document.getElementById("totalPrice").innerHTML = "Cart price: " + result.toFixed(1) + " ₽"
-    }
-
-    function updateProductPrice(productId) {
-        let price = cartItems.get(productId).amount * cartItems.get(productId).price
-        document.getElementById('itemPrice' + productId).innerHTML = price.toFixed(1) + " ₽"
-    }
-
-    function updateProductAmount(productId, newAmount) {
-        cartItems.get(productId).amount = newAmount
-    }
-
-    function onPlusClicked(productId, csrfToken) {
-        let data = {btnPlus: productId, btnMinus: ""}
-        $.ajax(
-            {
-                type: "POST",
-                url: "/cart",
-                data: $.param(data),
-                headers: {'X-CSRF-Token': csrfToken}
-            }
-        )
-
-        let itemAmount = cartItems.get(productId).amount + 1
-        document.getElementById('btnPlus' + productId).nextElementSibling.innerHTML = itemAmount
-        updateProductAmount(productId, itemAmount)
-        updateTotalSum()
-        updateProductPrice(productId)
-    }
-
-    function onMinusClicked(productId, csrfToken) {
-        let data = {btnPlus: "", btnMinus: productId}
-        $.ajax(
-            {
-                type: "POST",
-                url: "/cart",
-                data: $.param(data),
-                headers: {'X-CSRF-Token': csrfToken}
-            }
-        )
-
-        let itemAmount = cartItems.get(productId).amount - 1
-        document.getElementById('btnMinus' + productId).previousElementSibling.innerHTML = itemAmount
-        updateProductAmount(productId, itemAmount)
-        updateTotalSum()
-        updateProductPrice(productId)
-
-        if (itemAmount === 0) {
-            document.getElementById('card' + productId).remove()
-        }
-    }
-</script>
+<script type="text/javascript" th:src="@{/js/cart_managing.js}"></script>
 <head>
     <meta charset="UTF-8">
     <title>Cart</title>
@@ -96,13 +26,14 @@
             <div class="col-10">
                 <div class="d-flex justify-content-between align-items-center">
                     <h3 class="fw-bold mb-0 text-dark">Your shopping Cart</h3>
-                    <h6 class="mb-0 text-muted me-2" th:text="'Items in cart: ' + ${productsInCart.size()}"></h6>
+                    <h6 id="totalAmount" class="mb-0 text-muted me-2"></h6>
                 </div>
                 <div class="d-flex justify-content-end mb-5">
                     <h6 id="totalPrice" class="mb-0 text-muted me-2"></h6>
                 </div>
 
-                <div th:id="'card' + ${product.getProductId()}" th:each="product: ${productsInCart}" class="card rounded-3 mb-4 shadow-lg">
+                <div th:id="'card' + ${product.getProductId()}" th:each="product: ${productsInCart}"
+                     class="card rounded-3 mb-4 shadow-lg">
                     <div class="card-body p-4">
                         <div class="row d-flex justify-content-between align-items-center">
                             <div class="col-md-2 col-lg-2 col-xl-2">
@@ -135,14 +66,20 @@
                                     th:text="${product.getProductPrice() * product.getProductAmount()} + ' ₽'"
                                     class="mb-0"></h5>
                             </div>
+                            <div class="col-md-1 col-lg-1 col-xl-1 text-end me-2">
+                                <button th:onclick="deleteProductFromCart([[${product.getProductId()}]], [[${_csrf.token}]])"
+                                        class="btn btn-outline-danger">
+                                    Delete
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
-                <div th:if="${!productsInCart.isEmpty()}" class="container mt-5">
+                <div id="toOrder" class="container mt-5">
                     <div class="row">
                         <div class="col text-center">
                             <form method="get" th:action="@{/order}">
-                                <button name="toOrder" value="OK" class="btn btn-outline-dark mt-3 mb-5">
+                                <button class="btn btn-outline-dark mt-3 mb-5">
                                     Proceed to Pay
                                 </button>
                             </form>

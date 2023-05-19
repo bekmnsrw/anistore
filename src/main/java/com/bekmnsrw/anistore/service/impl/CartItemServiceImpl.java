@@ -54,16 +54,6 @@ public class CartItemServiceImpl implements CartItemService {
     }
 
     @Override
-    public void increaseProductAmount(Long cartId, Long productId) {
-        cartItemRepository.increaseProductAmount(cartId, productId);
-    }
-
-    @Override
-    public void decreaseProductAmount(Long cartId, Long productId) {
-        cartItemRepository.decreaseProductAmount(cartId, productId);
-    }
-
-    @Override
     public List<CartItemDto> getUserCartInController(String email) {
         List<CartItemDto> result = new ArrayList<>();
 
@@ -93,12 +83,18 @@ public class CartItemServiceImpl implements CartItemService {
     @Override
     public void increaseProductAmountInController(String email, Long productId) {
         CartDto cartDto = cartService.findCurrentCart(email);
-        this.increaseProductAmount(cartDto.getId(), productId);
+        cartItemRepository.increaseProductAmount(cartDto.getId(), productId);
     }
 
     @Override
     public void decreaseProductAmountInController(String email, Long productId) {
         CartDto cartDto = cartService.findCurrentCart(email);
-        this.decreaseProductAmount(cartDto.getId(), productId);
+        cartItemRepository.decreaseProductAmount(cartDto.getId(), productId);
+    }
+
+    @Override
+    public void deleteProductFromCart(String email, Long productId) {
+        CartDto cartDto = cartService.findCurrentCart(email);
+        cartItemRepository.deleteByCartIdAndProductId(cartDto.getId(), productId);
     }
 }
