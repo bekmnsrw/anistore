@@ -1,7 +1,7 @@
 package com.bekmnsrw.anistore.mapper.impl;
 
 import com.bekmnsrw.anistore.dto.CartItemDto;
-import com.bekmnsrw.anistore.dto.ProductDto;
+import com.bekmnsrw.anistore.dto.product.ProductDto;
 import com.bekmnsrw.anistore.mapper.ProductMapper;
 import com.bekmnsrw.anistore.model.Product;
 import org.springframework.stereotype.Component;

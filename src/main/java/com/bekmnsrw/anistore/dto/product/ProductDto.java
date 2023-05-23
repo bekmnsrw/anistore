@@ -1,4 +1,4 @@
-package com.bekmnsrw.anistore.dto;
+package com.bekmnsrw.anistore.dto.product;
 
 import com.bekmnsrw.anistore.model.enums.ProductCategory;
 import lombok.AllArgsConstructor;

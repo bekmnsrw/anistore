@@ -1,7 +1,7 @@
 package com.bekmnsrw.anistore.mapper;
 
 import com.bekmnsrw.anistore.dto.CartItemDto;
-import com.bekmnsrw.anistore.dto.ProductDto;
+import com.bekmnsrw.anistore.dto.product.ProductDto;
 import com.bekmnsrw.anistore.model.Product;
 
 import java.util.List;

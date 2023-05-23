@@ -1,6 +1,8 @@
 package com.bekmnsrw.anistore.controller.rest;
 
 import com.bekmnsrw.anistore.service.CartItemService;
+import com.bekmnsrw.anistore.service.CatalogService;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -9,12 +11,13 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/catalog")
-@SessionAttributes("count")
+@RequestMapping("/rest/catalog")
+@SessionAttributes("products")
 @RequiredArgsConstructor
 public class CatalogRestController {
 
     private final CartItemService cartItemService;
+    private final CatalogService catalogService;
 
     private static final String ROLE_ANONYMOUS = "ROLE_ANONYMOUS";
 
@@ -32,5 +35,16 @@ public class CatalogRestController {
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .build();
+    }
+
+    @GetMapping
+    public ResponseEntity<?> filter(
+            @RequestParam(value = "filter", required = false) String filterParam,
+            HttpServletRequest httpServletRequest
+    ) {
+        httpServletRequest.getSession().setAttribute("products", catalogService.getAllByFilter(filterParam));
+        return ResponseEntity
+                .status(HttpStatus.ACCEPTED)
+                .body(catalogService.getAllByFilter(filterParam));
     }
 }

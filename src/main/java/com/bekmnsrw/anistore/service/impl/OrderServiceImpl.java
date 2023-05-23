@@ -3,7 +3,7 @@ package com.bekmnsrw.anistore.service.impl;
 import com.bekmnsrw.anistore.dto.CartDto;
 import com.bekmnsrw.anistore.dto.CartItemDto;
 import com.bekmnsrw.anistore.dto.OrderDto;
-import com.bekmnsrw.anistore.dto.ProductDto;
+import com.bekmnsrw.anistore.dto.product.ProductDto;
 import com.bekmnsrw.anistore.dto.form.OrderForm;
 import com.bekmnsrw.anistore.dto.form.OrderHistoryDto;
 import com.bekmnsrw.anistore.mapper.CartMapper;
@@ -38,6 +38,8 @@ public class OrderServiceImpl implements OrderService {
     private final DiscountService discountService;
     private final CartMapper cartMapper;
     private final OrderMapper orderMapper;
+
+    private static final String DATE_PATTERN = "yyyy-MM-dd HH:mm";
 
     @Override
     public Double getTotalOrderPrice(String email) {
@@ -104,7 +106,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     private String currentDate() {
-        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(DATE_PATTERN);
         LocalDateTime now = LocalDateTime.now();
         return dateTimeFormatter.format(now);
     }
