@@ -1,13 +1,29 @@
-function addProductToCart(id) {
+function addProductToCart(id, title) {
     let csrfToken = sessionStorage.getItem("csrfToken")
     $.ajax(
         {
             type: "POST",
             url: "/rest/catalog",
             data: $.param({productId: id}),
-            headers: {'X-CSRF-Token': csrfToken}
+            headers: {'X-CSRF-Token': csrfToken},
+            success: function (data) {
+                if (data === "success") { notify(title) }
+            }
         }
     )
+}
+
+function notify(title) {
+    Swal.fire({
+        text: title + " was successfully added to your cart",
+        position: "bottom-end",
+        allowOutsideClick: true,
+        allowEscapeKey: false,
+        allowEnterKey: false,
+        showConfirmButton: false,
+        showCancelButton: false,
+        timer: 2000
+    });
 }
 
 function filter(filterParam) {
@@ -29,30 +45,32 @@ function getCsrfToken(csrfToken) {
 }
 
 function displayFilterResult(result) {
-    let list = $('.list-item');
+    let list = $('.container');
     list.empty()
 
     if (result.length > 0) {
         result.forEach(function (product) {
-            let item = $('<li class="card"></li>');
-            let media = $('<div class="scale"></div>');
-            let image = $('<img src="' + product.imageUrl + '" class="card-img-top">');
-            let cardBody = $('<div class="card-body"></div>');
-            let category = $('<h6 class="card-text">' + product.productCategory + '</h6>')
-            let description = $('<h6 class="card-text text-muted">' + product.description + '</h6>')
-            let title = $('<h5 class="card-title">' + product.title + '</h5>');
-            let price = $('<h5 class="card-text">' + product.price + ' ₽' + '</h5>');
-            let button = $('<button class="btn btn-outline-dark" onclick="addProductToCart(' + product.id + ')">' + 'Add to cart' + '</button>');
+            let card = $('<li>').addClass('card')
+            let cardContent = $('<div>').addClass('scale')
+            let image = $('<img>').addClass('card-img-top').attr('src', product.imageUrl)
+            let cardBody = $('<div>').addClass('card-body')
+            let category = $('<h6>').addClass('card-text').html(product.productCategory)
+            let description = $('<h6>').addClass('card-text', 'text-muted').html(product.description)
+            let title = $('<h5>').addClass('card-title').html(product.title)
+            let price = $('<h5>').addClass('card-text').html(product.price + '₽')
+            let button = $('<button>').addClass('btn btn-outline-dark').click(function () {
+                addProductToCart(product.id, product.title)
+            }).text('Add to cart')
 
             cardBody.append(title);
             cardBody.append(category)
             cardBody.append(description);
-            media.append(image);
-            media.append(cardBody);
-            item.append(media);
-            list.append(item);
+            cardContent.append(image);
+            cardContent.append(cardBody);
+            card.append(cardContent);
+            list.append(card);
             cardBody.append(price)
-            media.append(button)
+            cardContent.append(button)
         });
     } else {
         list.append('<li class="card">No results found</li>')

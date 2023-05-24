@@ -12,6 +12,7 @@
           crossorigin="anonymous">
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script type="text/javascript" th:src="@{/js/catalog.js}"></script>
 </head>
 <body th:onload="filter('NONE'), getCsrfToken([[${_csrf.token}]])">
@@ -26,25 +27,6 @@
         <option th:onclick="filter('EXPENSIVE_FIRST')">Expensive</option>
     </select>
 </div>
-<div class="container">
-    <ul class="list-item" style="display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; grid-template-rows: 1fr 1fr">
-        <li class="card" th:each="product : ${products}">
-            <div class="scale">
-                <img th:src="${product.imageUrl}" class="card-img-top">
-                <div class="card-body">
-                    <h5 class="card-title" th:text="${product.title}"></h5>
-                    <h6 class="card-text" th:text="${product.productCategory}"></h6>
-                    <h6 class="card-text text-muted" th:text="${product.description}"></h6>
-                    <h5 class="card-text" th:text="${product.price} + ' ₽'"></h5>
-                    <p th:text="${product.description}"></p>
-                    <button class="btn btn-outline-dark"
-                            th:onclick="addProductToCart([[${product.getId()}]])">
-                        Add to cart
-                    </button>
-                </div>
-            </div>
-        </li>
-    </ul>
-</div>
+<ul class="container" style="display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; grid-template-rows: 1fr 1fr"></ul>
 </body>
 </html>

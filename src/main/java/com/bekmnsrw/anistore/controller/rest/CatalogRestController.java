@@ -22,19 +22,19 @@ public class CatalogRestController {
     private static final String ROLE_ANONYMOUS = "ROLE_ANONYMOUS";
 
     @PostMapping
-    public ResponseEntity<?> addProductToCart(
+    public ResponseEntity<String> addProductToCart(
             @RequestParam("productId") Long productId
     ) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String role = authentication.getAuthorities().toArray()[0].toString();
+        String result = "error";
 
         if (!role.equals(ROLE_ANONYMOUS)) {
             cartItemService.addProductToCartInController(authentication.getName(), productId);
+            result = "success";
         }
 
-        return ResponseEntity
-                .status(HttpStatus.CREATED)
-                .build();
+        return ResponseEntity.ok(result);
     }
 
     @GetMapping
