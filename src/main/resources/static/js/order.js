@@ -19,3 +19,21 @@ function applyPromo(totalOrderPrice, csrfToken) {
         }
     )
 }
+
+function convert(symbols, amount) {
+    if (symbols === "NONE") {
+        document.getElementById("convertedPrice").style.visibility = "invisible"
+    }
+
+    $.ajax(
+        {
+            type: "GET",
+            url: "/convert",
+            data: $.param({ symbols: symbols, amount: amount }),
+            success: function (response) {
+                document.getElementById("convertedPrice").style.visibility = "visible"
+                document.getElementById("convertedPrice").innerText = response
+            }
+        }
+    )
+}

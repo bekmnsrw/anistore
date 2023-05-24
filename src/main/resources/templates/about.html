@@ -1,8 +1,7 @@
 <!DOCTYPE html>
 <html lang="en"
       xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+      xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -138,10 +137,11 @@
     </div>
 </main>
 
-<h2 class="featurette-heading text-center fw-normal">So, what are you waiting for? <span
-        class="text-muted">Let's start!</span></h2>
-<div th:if="${name == null}" class="d-flex justify-content-center mb-5">
-    <a th:if="${name == null}" class="btn btn-outline-dark mt-3 mb-5" th:href="@{/sign-in}">Start</a>
+<div th:if="${session.email == null}">
+    <h2 class="featurette-heading text-center fw-normal">So, what are you waiting for? <span class="text-muted">Let's start!</span></h2>
+        <div class="d-flex justify-content-center mb-5">
+            <a class="btn btn-outline-dark mt-3 mb-5" th:href="@{/sign-in}">Start</a>
+        </div>
 </div>
 
 <footer class="text-center text-white position-absolute start-0 end-0 bg-dark">

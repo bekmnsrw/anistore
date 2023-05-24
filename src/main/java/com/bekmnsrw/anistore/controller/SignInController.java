@@ -1,8 +1,8 @@
 package com.bekmnsrw.anistore.controller;
 
-import org.springframework.security.authentication.AnonymousAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
@@ -10,16 +10,26 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class SignInController {
 
     @GetMapping("/sign-in")
-    public String getSignInPage() {
-        if (isAuthenticated()) { return "redirect:profile"; }
-        return "auth/sign_in";
-    }
+    public String getSignInPage(
+            HttpSession httpSession,
+            HttpServletRequest httpServletRequest
+    ) {
+        Cookie[] cookies = httpServletRequest.getCookies();
+        Boolean isRememberMe = false;
 
-    private boolean isAuthenticated() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication == null ||
-                AnonymousAuthenticationToken.class.isAssignableFrom(authentication.getClass())
-        ) { return false; }
-        return authentication.isAuthenticated();
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if (cookie.getName().equals("remember-me")) {
+                    System.out.println(cookie.getName());
+                    isRememberMe = true;
+                }
+            }
+        }
+
+        if (httpSession.getAttribute("email") != null || isRememberMe) {
+            return "redirect:profile";
+        } else {
+            return "auth/sign_in";
+        }
     }
 }
