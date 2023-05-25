@@ -126,6 +126,17 @@
                                     Total Price
                                     <span id="totalPrice" th:text="${totalOrderPrice} + ' ₽'"></span>
                                 </li>
+                                <li class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 pb-0 mt-2">
+                                    <span>Convert oder price</span>
+                                </li>
+                                <li class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 pb-0">
+                                    <select>
+                                        <option th:onclick="convert('NONE', [[${totalOrderPrice}]])">NONE</option>
+                                        <option th:onclick="convert('USD', [[${totalOrderPrice}]])">USD</option>
+                                        <option th:onclick="convert('EUR', [[${totalOrderPrice}]])">EUR</option>
+                                    </select>
+                                    <span id="convertedPrice"></span>
+                                </li>
                                 <li class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 pb-0">
                                     <div class="form-floating mt-4">
                                         <input type="text"
@@ -141,17 +152,7 @@
                                     </button>
                                 </li>
                                 <li class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 pb-0">
-                                </li>
-                                <li class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 pb-0">
-                                    <span>Convert oder price</span>
-                                </li>
-                                <li class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 pb-0">
-                                    <select>
-                                        <option th:onclick="convert('NONE', [[${totalOrderPrice}]])">NONE</option>
-                                        <option th:onclick="convert('USD', [[${totalOrderPrice}]])">USD</option>
-                                        <option th:onclick="convert('EUR', [[${totalOrderPrice}]])">EUR</option>
-                                    </select>
-                                    <span id="convertedPrice"></span>
+                                    <span class="mb-2" id="supporting-text"></span>
                                 </li>
                             </ul>
                         </div>

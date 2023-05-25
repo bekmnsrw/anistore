@@ -2,9 +2,8 @@ package com.bekmnsrw.anistore.controller;
 
 import com.bekmnsrw.anistore.dto.CartItemDto;
 import com.bekmnsrw.anistore.service.CartItemService;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,9 +21,11 @@ public class CartController {
     private final CartItemService cartItemService;
 
     @GetMapping
-    public String getCartPage(Model model) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        List<CartItemDto> productsInCart = cartItemService.getUserCartInController(authentication.getName());
+    public String getCartPage(
+            Model model,
+            HttpSession httpSession
+    ) {
+        List<CartItemDto> productsInCart = cartItemService.getUserCartInController(httpSession.getAttribute("email").toString());
         model.addAttribute("productsInCart", productsInCart);
         return "cart";
     }
