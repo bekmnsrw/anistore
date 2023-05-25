@@ -1,9 +1,12 @@
 package com.bekmnsrw.anistore.mapper.impl;
 
-import com.bekmnsrw.anistore.dto.OrderDto;
+import com.bekmnsrw.anistore.dto.order.OrderDto;
 import com.bekmnsrw.anistore.mapper.OrderMapper;
 import com.bekmnsrw.anistore.model.Order;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 public class OrderMapperImpl implements OrderMapper {
@@ -17,5 +20,12 @@ public class OrderMapperImpl implements OrderMapper {
                 .orderStatus(order.getOrderStatus())
                 .totalOrderPrice(order.getTotalOrderPrice())
                 .build();
+    }
+
+    @Override
+    public List<OrderDto> from(List<Order> orders) {
+        return orders.stream()
+                .map(this::from)
+                .collect(Collectors.toList());
     }
 }

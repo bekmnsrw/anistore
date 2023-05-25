@@ -2,7 +2,8 @@ package com.bekmnsrw.anistore.service.impl;
 
 import com.bekmnsrw.anistore.dto.CartDto;
 import com.bekmnsrw.anistore.dto.CartItemDto;
-import com.bekmnsrw.anistore.dto.OrderDto;
+import com.bekmnsrw.anistore.dto.order.OrderDto;
+import com.bekmnsrw.anistore.dto.order.OrderPage;
 import com.bekmnsrw.anistore.dto.product.ProductDto;
 import com.bekmnsrw.anistore.dto.form.OrderForm;
 import com.bekmnsrw.anistore.dto.form.OrderHistoryDto;
@@ -17,6 +18,9 @@ import com.bekmnsrw.anistore.repository.OrderRepository;
 import com.bekmnsrw.anistore.repository.UserRepository;
 import com.bekmnsrw.anistore.service.*;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -38,6 +42,9 @@ public class OrderServiceImpl implements OrderService {
     private final DiscountService discountService;
     private final CartMapper cartMapper;
     private final OrderMapper orderMapper;
+
+    @Value("${application.default-page-size}")
+    private Integer defaultPageSize;
 
     private static final String DATE_PATTERN = "yyyy-MM-dd HH:mm";
 
@@ -103,6 +110,24 @@ public class OrderServiceImpl implements OrderService {
         }
 
         return orderHistory;
+    }
+
+    @Override
+    public OrderPage getAll(Integer page) {
+        PageRequest pageRequest = PageRequest.of(page, defaultPageSize);
+        Page<Order> orderPage = orderRepository.findAll(pageRequest);
+
+        return OrderPage.builder()
+                .orders(orderMapper.from(orderPage.getContent()))
+                .totalPages(orderPage.getTotalPages())
+                .build();
+    }
+
+    @Override
+    public OrderDto updateOrderStatus(Long orderId, String status) {
+        Order order = orderRepository.findById(orderId).get();
+        order.setOrderStatus(OrderStatus.valueOf(status));
+        return orderMapper.from(orderRepository.save(order));
     }
 
     private String currentDate() {

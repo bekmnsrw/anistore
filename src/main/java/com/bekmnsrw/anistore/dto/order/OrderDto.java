@@ -1,4 +1,4 @@
-package com.bekmnsrw.anistore.dto;
+package com.bekmnsrw.anistore.dto.order;
 
 import com.bekmnsrw.anistore.model.enums.OrderStatus;
 import lombok.AllArgsConstructor;

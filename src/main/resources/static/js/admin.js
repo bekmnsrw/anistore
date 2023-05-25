@@ -167,5 +167,76 @@ function getProducts(result) {
             list.append(tr)
         })
     }
+}
 
+function getOrdersPage() {
+    let page = document.getElementById("page").value
+
+    $.ajax(
+        {
+            type: "GET",
+            url: "/rest/orders",
+            data: $.param({"page": page}),
+            success: function (data) {
+                console.log(data)
+                getOrders(data.orders)
+            }
+        }
+    )
+}
+
+function getOrders(result) {
+    let orders = $('.container')
+    orders.empty();
+
+    if (result.length > 0) {
+        result.forEach(function (order) {
+            let tr = $('<tr>').attr('id', order.id)
+            let th = $('<th>').addClass('text-center').attr('scope', 'row').html(order.id)
+            let td1 = $('<td>').addClass('text-center').html(order.createdAt)
+            let td2 = $('<td>').addClass('text-center').html(order.deliveryAddress)
+            let td3 = $('<td>').addClass('text-center').html(order.orderStatus)
+            let td4 = $('<td>').addClass('text-center').html(order.totalOrderPrice + ' ₽')
+            let td5 = $('<td>').addClass('text-center')
+            let td6 = $('<select>').addClass('form-select')
+            let td7 = $('<option>').text('SHIPPING').click(function () {
+                updateOrderStatus(order.id, 'SHIPPING')
+            })
+            let td8 = $('<option>').text('DELIVERED').click(function () {
+                updateOrderStatus(order.id, 'DELIVERED')
+            })
+            let td9 = $('<option>').text('')
+
+            tr.append(th)
+            tr.append(td1)
+            tr.append(td2)
+            tr.append(td3)
+            tr.append(td4)
+            tr.append(td5)
+            tr.append(td6)
+            td5.append(td6)
+            td6.append(td9)
+            td6.append(td7)
+            td6.append(td8)
+            orders.append(tr)
+        })
+    }
+}
+
+function updateOrderStatus(id, status) {
+    let csrfToken = sessionStorage.getItem("csrfToken")
+
+    $.ajax(
+        {
+            url: '/rest/orders/' + id,
+            method: "PUT",
+            data: $.param( {"status": status} ),
+            headers: {'X-CSRF-Token': csrfToken},
+            success: function (data) {
+                notify(
+                    "Order with id <" + data.id + "> was successfully updated"
+                )
+            }
+        }
+    )
 }
