@@ -53,15 +53,15 @@ public class ProductServiceImpl implements ProductService {
     public ProductDto updateProduct(Long id, NewOrUpdatedProductDto updatedProductDto) {
         Product product = getOrThrow(id);
 
-        if (updatedProductDto.getTitle() != null) {
+        if (updatedProductDto.getTitle() != null && !updatedProductDto.getTitle().equals("")) {
             product.setTitle(updatedProductDto.getTitle());
         }
 
-        if (updatedProductDto.getDescription() != null) {
+        if (updatedProductDto.getDescription() != null && !updatedProductDto.getDescription().equals("")) {
             product.setDescription(updatedProductDto.getDescription());
         }
 
-        if (updatedProductDto.getImageUrl() != null) {
+        if (updatedProductDto.getImageUrl() != null && !updatedProductDto.getImageUrl().equals("")) {
             product.setImageUrl(updatedProductDto.getImageUrl());
         }
 

@@ -45,7 +45,7 @@ function getCsrfToken(csrfToken) {
 }
 
 function displayFilterResult(result) {
-    let list = $('.container');
+    let list = $('.container')
     list.empty()
 
     if (result.length > 0) {
@@ -57,7 +57,7 @@ function displayFilterResult(result) {
             let category = $('<h6>').addClass('card-text').html(product.productCategory)
             let description = $('<h6>').addClass('card-text', 'text-muted').html(product.description)
             let title = $('<h5>').addClass('card-title').html(product.title)
-            let price = $('<h5>').addClass('card-text').html(product.price + '₽')
+            let price = $('<h5>').addClass('card-text').html(product.price + ' ₽')
             let button = $('<button>').addClass('btn btn-outline-dark').click(function () {
                 addProductToCart(product.id, product.title)
             }).text('Add to cart')

@@ -16,6 +16,7 @@
                 <li class="nav-item ms-2"><a class="nav-link" th:href="@{/catalog}">Catalog</a></li>
                 <li th:if="${session.email != null}" class="nav-item ms-2"><a class="nav-link position-relative" th:href="@{/cart}">Cart</a></li>
                 <li th:if="${session.email != null}" class="nav-item ms-2"><a class="nav-link" th:href="@{/profile}">Profile</a></li>
+                <li th:if="${session.role == 'ROLE_ADMIN'}" class="nav-item ms-2"><a class="nav-link" th:href="@{/admin/add-product}">Add product</a></li>
             </ul>
         </div>
     </div>

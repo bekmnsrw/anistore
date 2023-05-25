@@ -31,7 +31,7 @@ public class SecurityConfiguration {
     private static final String SIGN_IN_FAILURE_URL = "/sign-in?error";
     private static final String SIGN_IN_URL = "/sign-in";
     private static final String SIGN_OUT_URL = "/sign-out";
-    private static final String ADMIN_ROLE = "ADMIN";
+    private static final String ADMIN_ROLE = "ROLE_ADMIN";
     private static final String JSESSIONID = "JSESSIONID";
 
     private static final String USERNAME_PARAMETER = "email";
@@ -60,11 +60,11 @@ public class SecurityConfiguration {
                 .passwordParameter(PASSWORD_PARAMETER)
                 .defaultSuccessUrl(PROFILE_URL)
                 .failureUrl(SIGN_IN_FAILURE_URL)
-                .successHandler(authSuccessHandler)
-                .and()
-                .rememberMe()
-                .rememberMeParameter(REMEMBER_ME_PARAMETER)
-                .tokenRepository(persistentTokenRepository());
+                .successHandler(authSuccessHandler);
+//                .and()
+//                .rememberMe()
+//                .rememberMeParameter(REMEMBER_ME_PARAMETER)
+//                .tokenRepository(persistentTokenRepository());
 
         httpSecurity.logout()
                 .logoutRequestMatcher(new AntPathRequestMatcher(SIGN_OUT_URL))

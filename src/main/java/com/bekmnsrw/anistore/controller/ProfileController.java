@@ -30,6 +30,7 @@ public class ProfileController {
         model.addAttribute("orderHistory", orderService.getOrderHistory(authentication.getName()));
         model.addAttribute("userDto", userDto);
         System.out.println(httpSession.getAttribute("email"));
+        System.out.println(httpSession.getAttribute("role"));
         return "profile";
     }
 }
