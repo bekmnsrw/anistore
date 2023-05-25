@@ -4,5 +4,5 @@ import com.bekmnsrw.anistore.dto.form.SignUpForm;
 
 public interface SignUpService {
 
-    void signUp(SignUpForm signUpForm);
+    String signUp(SignUpForm signUpForm);
 }

@@ -1,5 +1,6 @@
 package com.bekmnsrw.anistore.security.config;
 
+import com.bekmnsrw.anistore.security.handler.AuthFailureHandler;
 import com.bekmnsrw.anistore.security.handler.AuthSuccessHandler;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,6 +43,7 @@ public class SecurityConfiguration {
     private final UserDetailsService userDetailsServiceImpl;
     private final DataSource dataSource;
     private final AuthSuccessHandler authSuccessHandler;
+    private final AuthFailureHandler authFailureHandler;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
@@ -58,8 +60,7 @@ public class SecurityConfiguration {
                 .loginProcessingUrl(SIGN_IN_URL)
                 .usernameParameter(USERNAME_PARAMETER)
                 .passwordParameter(PASSWORD_PARAMETER)
-                .defaultSuccessUrl(PROFILE_URL)
-                .failureUrl(SIGN_IN_FAILURE_URL)
+                .failureHandler(authFailureHandler)
                 .successHandler(authSuccessHandler);
 //                .and()
 //                .rememberMe()
