@@ -37,6 +37,11 @@ function addProduct() {
                     notify(
                         data.title + " was successfully added to db"
                     )
+                    document.getElementById("productName").value = ""
+                    document.getElementById("productDescription").value = ""
+                    document.getElementById("productPrice").value = ""
+                    document.getElementById("productCategory").value = ""
+                    document.getElementById("productImage").value = ""
                 }
             }
         )
@@ -74,6 +79,7 @@ function updateProduct() {
                     notify(
                         data.title + " was successfully updated"
                     )
+                    document.getElementById("update-form").reset()
                 },
                 error: function () {
                     document.getElementById("errorMessage").style.visibility = "visible"
