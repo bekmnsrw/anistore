@@ -116,24 +116,48 @@ function getPage() {
     )
 }
 
+function deleteProduct(id) {
+    let csrfToken = sessionStorage.getItem("csrfToken")
+
+    $.ajax(
+        {
+            url: '/rest/products/' + id,
+            method: "DELETE",
+            headers: {'X-CSRF-Token': csrfToken},
+            success: function () {
+                notify(
+                    "Product with id <" + id + "> was successfully deleted"
+                )
+                document.getElementById(id).remove()
+            }
+        }
+    )
+}
+
 function getProducts(result) {
     let list = $('.container')
     list.empty();
 
     if (result.length > 0) {
         result.forEach(function (product) {
-            let tr = $('<tr>')
+            let tr = $('<tr>').attr('id', product.id)
             let th = $('<th>').addClass('text-center').attr('scope', 'row').html(product.id)
             let td1 = $('<td>').addClass('text-center').html(product.title)
             let td2 = $('<td>').addClass('text-center').html(product.description)
-            let td3 = $('<td>').addClass('text-center').html(product.price)
+            let td3 = $('<td>').addClass('text-center').html(product.price + ' ₽')
             let td4 = $('<td>').addClass('text-center').html(product.productCategory)
+            let td5 = $('<td>').addClass('text-center')
+            let buttonDelete = $('<button>').addClass('btn btn-outline-danger').text('Delete').click(function () {
+                deleteProduct(product.id)
+            })
 
             tr.append(th)
             tr.append(td1)
             tr.append(td2)
             tr.append(td3)
             tr.append(td4)
+            tr.append(td5)
+            td5.append(buttonDelete)
             list.append(tr)
         })
     }

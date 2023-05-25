@@ -58,9 +58,9 @@ function displayFilterResult(result) {
             let description = $('<h6>').addClass('card-text', 'text-muted').html(product.description)
             let title = $('<h5>').addClass('card-title').html(product.title)
             let price = $('<h5>').addClass('card-text').html(product.price + ' ₽')
-            let button = $('<button>').addClass('btn btn-outline-dark').click(function () {
+            let button = $('<button>').addClass('btn btn-outline-dark').text('Add to cart').click(function () {
                 addProductToCart(product.id, product.title)
-            }).text('Add to cart')
+            })
 
             cardBody.append(title);
             cardBody.append(category)
