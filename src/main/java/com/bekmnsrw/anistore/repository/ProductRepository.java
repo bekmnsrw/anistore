@@ -24,4 +24,7 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     List<Product> filterManga();
 
     Page<Product> findAll(Pageable pageable);
+
+    @Query(value = "SELECT p FROM products p WHERE p.id NOT IN (SELECT c.product.id FROM cart_items c WHERE c.cart.id = :cartId)")
+    List<Product> getUnorderedProducts(Long cartId);
 }

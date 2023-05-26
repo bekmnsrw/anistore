@@ -14,6 +14,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -88,6 +89,11 @@ public class ProductServiceImpl implements ProductService {
                 .products(productMapper.from(productPage.getContent()))
                 .totalPages(productPage.getTotalPages())
                 .build();
+    }
+
+    @Override
+    public List<ProductDto> findUnorderedProducts(Long cartId) {
+        return productMapper.from(productRepository.getUnorderedProducts(cartId));
     }
 
     private Product getOrThrow(Long id) {

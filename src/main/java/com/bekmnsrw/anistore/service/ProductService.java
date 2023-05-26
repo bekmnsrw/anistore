@@ -19,4 +19,5 @@ public interface ProductService {
     ProductDto updateProduct(Long id, NewOrUpdatedProductDto updatedProductDto);
     void deleteProduct(Long id);
     ProductPage getAll(Integer page);
+    List<ProductDto> findUnorderedProducts(Long cartId);
 }

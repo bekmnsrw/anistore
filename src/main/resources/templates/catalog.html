@@ -25,6 +25,7 @@
         <option th:onclick="filter('SNACKS')">Snacks</option>
         <option th:onclick="filter('CHEAPEST_FIRST')">Cheapest</option>
         <option th:onclick="filter('EXPENSIVE_FIRST')">Expensive</option>
+        <option th:if="${session.cart != null}" th:onclick="unordered([[${session.cart}]])">Check also</option>
     </select>
 </div>
 <ul class="container" style="display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; grid-template-rows: 1fr 1fr"></ul>

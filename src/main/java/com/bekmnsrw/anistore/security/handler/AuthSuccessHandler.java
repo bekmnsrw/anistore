@@ -1,6 +1,7 @@
 package com.bekmnsrw.anistore.security.handler;
 
 import com.bekmnsrw.anistore.security.details.UserDetailsImpl;
+import com.bekmnsrw.anistore.service.CartService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
@@ -16,6 +17,7 @@ import java.io.IOException;
 public class AuthSuccessHandler implements AuthenticationSuccessHandler {
 
     private final HttpSession httpSession;
+    private final CartService cartService;
 
     @Override
     public void onAuthenticationSuccess(
@@ -24,9 +26,11 @@ public class AuthSuccessHandler implements AuthenticationSuccessHandler {
             Authentication authentication
     ) throws IOException {
         UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+        String email = userDetails.getUsername();
 
-        httpSession.setAttribute("email", userDetails.getUsername());
+        httpSession.setAttribute("email", email);
         httpSession.setAttribute("role", String.valueOf(userDetails.getAuthorities().stream().findFirst().get()));
+        httpSession.setAttribute("cart", cartService.findCurrentCart(email).getId());
 
         response.setStatus(HttpServletResponse.SC_OK);
         response.sendRedirect("profile");

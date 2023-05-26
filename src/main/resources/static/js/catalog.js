@@ -33,6 +33,20 @@ function filter(filterParam) {
             url: "/rest/catalog",
             data: $.param({filter: filterParam}),
             success: function (data) {
+                console.log(data)
+                displayFilterResult(data)
+            }
+        }
+    )
+}
+
+function unordered(cartId) {
+    $.ajax(
+        {
+            type: "GET",
+            url: "/rest/catalog/unordered",
+            data: $.param({cartId: cartId}),
+            success: function (data) {
                 displayFilterResult(data)
             }
         }
