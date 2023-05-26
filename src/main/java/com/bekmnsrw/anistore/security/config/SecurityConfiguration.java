@@ -23,13 +23,9 @@ import javax.sql.DataSource;
 @RequiredArgsConstructor
 public class SecurityConfiguration {
 
-    private static final String[] WHITE_URL_LIST = { "/welcome", "/about", "/catalog" };
     private static final String[] ANONYMOUS_URL_LIST = { "/sign-in", "/sign-up" };
     private static final String[] ADMIN_URL_LIST = { "/admin/**" };
     private static final String[] AUTH_URL_LIST = { "/sign-out", "/profile", "/cart", "/order" };
-
-    private static final String PROFILE_URL = "/profile";
-    private static final String SIGN_IN_FAILURE_URL = "/sign-in?error";
     private static final String SIGN_IN_URL = "/sign-in";
     private static final String SIGN_OUT_URL = "/sign-out";
     private static final String ADMIN_ROLE = "ROLE_ADMIN";

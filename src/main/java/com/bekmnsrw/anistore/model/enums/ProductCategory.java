@@ -1,3 +1,10 @@
 package com.bekmnsrw.anistore.model.enums;
 
-public enum ProductCategory { MANGA, SNACKS, FIGURES }
+import io.swagger.v3.oas.annotations.media.Schema;
+
+@Schema(description = "Product's category")
+public enum ProductCategory {
+    @Schema(description = "MANGA category") MANGA,
+    @Schema(description = "SNACKS category") SNACKS,
+    @Schema(description = "FIGURES category") FIGURES
+}

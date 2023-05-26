@@ -1,4 +1,4 @@
-package com.bekmnsrw.anistore.aop;
+package com.bekmnsrw.anistore.util;
 
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.AfterThrowing;
