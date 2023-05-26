@@ -59,6 +59,8 @@ public class CartItemServiceImpl implements CartItemService {
     public List<CartItemDto> getUserCartInController(String email) {
         List<CartItemDto> result = new ArrayList<>();
 
+        System.out.println("In controller");
+
         CartDto cartDto = cartService.findCurrentCart(email);
 
         if (cartDto != null) {
@@ -77,6 +79,7 @@ public class CartItemServiceImpl implements CartItemService {
     public void addProductToCartInController(String email, Long productId) {
         CartDto cartDto = cartService.findCurrentCart(email);
         this.addProductToCart(cartDto.getId(), productId);
+        System.out.println("Add product to cart");
 //        if (cartDto == null) {
 //            CartDto newCart = cartService.createCart(email);
 //            this.addProductToCart(newCart.getId(), productId);

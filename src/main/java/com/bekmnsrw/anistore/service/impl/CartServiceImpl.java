@@ -25,6 +25,7 @@ public class CartServiceImpl implements CartService {
 
     @Override
     public CartDto createCart(String email) {
+        System.out.println("Create cart");
         Optional<User> optionalUser = userRepository.findByEmail(email);
         if (optionalUser.isPresent()) {
             Cart cart = Cart.builder()
@@ -41,7 +42,13 @@ public class CartServiceImpl implements CartService {
     @Override
     public CartDto findCurrentCart(String email) {
         Optional<Cart> optionalCart = cartRepository.findByUserEmail(email);
-        return optionalCart.map(cartMapper::from).orElse(createCart(email));
+        if (optionalCart.isPresent()) {
+            System.out.println("Find cart, cart is present");
+            return cartMapper.from(optionalCart.get());
+        } else {
+            System.out.println("Find current cart, cart is null");
+            return this.createCart(email);
+        }
     }
 
     @Override
