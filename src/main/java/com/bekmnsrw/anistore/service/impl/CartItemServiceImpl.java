@@ -76,13 +76,13 @@ public class CartItemServiceImpl implements CartItemService {
     @Override
     public void addProductToCartInController(String email, Long productId) {
         CartDto cartDto = cartService.findCurrentCart(email);
-
-        if (cartDto == null) {
-            CartDto newCart = cartService.createCart(email);
-            this.addProductToCart(newCart.getId(), productId);
-        } else {
-            this.addProductToCart(cartDto.getId(), productId);
-        }
+        this.addProductToCart(cartDto.getId(), productId);
+//        if (cartDto == null) {
+//            CartDto newCart = cartService.createCart(email);
+//            this.addProductToCart(newCart.getId(), productId);
+//        } else {
+//            this.addProductToCart(cartDto.getId(), productId);
+//        }
     }
 
     @Override
