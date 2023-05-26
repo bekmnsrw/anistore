@@ -26,7 +26,7 @@ public class AuthSuccessHandler implements AuthenticationSuccessHandler {
         UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
 
         httpSession.setAttribute("email", userDetails.getUsername());
-        httpSession.setAttribute("role", userDetails.getAuthorities().stream().findFirst().get());
+        httpSession.setAttribute("role", String.valueOf(userDetails.getAuthorities().stream().findFirst().get()));
 
         response.setStatus(HttpServletResponse.SC_OK);
         response.sendRedirect("profile");
