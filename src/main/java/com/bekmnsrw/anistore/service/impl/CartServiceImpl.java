@@ -41,7 +41,7 @@ public class CartServiceImpl implements CartService {
     @Override
     public CartDto findCurrentCart(String email) {
         Optional<Cart> optionalCart = cartRepository.findByUserEmail(email);
-        return optionalCart.map(cartMapper::from).orElse(null);
+        return optionalCart.map(cartMapper::from).orElse(createCart(email));
     }
 
     @Override
